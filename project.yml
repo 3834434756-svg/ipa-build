@@ -1,0 +1,39 @@
+# XcodeGen 工程描述：WaterCheckIn（喝水打卡）
+# CI 里 xcodegen generate 现场生成 .xcodeproj 再 archive
+name: WaterCheckIn
+
+options:
+  bundleIdPrefix: com.example
+  deploymentTarget:
+    iOS: "16.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.0"
+    # 云端构建统一关闭签名
+    CODE_SIGN_IDENTITY: ""
+    CODE_SIGNING_REQUIRED: "NO"
+    CODE_SIGNING_ALLOWED: "NO"
+
+targets:
+  WaterCheckIn:
+    type: application
+    platform: iOS
+    sources:
+      - path: WaterCheckIn
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.watercheckin
+        TARGETED_DEVICE_FAMILY: "1,2"
+    info:
+      path: WaterCheckIn/Info.plist
+      properties:
+        CFBundleDisplayName: 喝水打卡
+        CFBundleShortVersionString: "1.0.0"
+        CFBundleVersion: "1"
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
