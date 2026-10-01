@@ -103,13 +103,7 @@ jobs:
           fi
           JSON="$(xcodebuild ${{ steps.probe.outputs.flag }} "${{ steps.probe.outputs.container }}" -list -json)"
           echo "$JSON"
-          SCHEME_FOUND="$(printf '%s' "$JSON" | python3 -c "
-import sys, json
-d = json.load(sys.stdin)
-node = d.get('workspace') or d.get('project') or {}
-schemes = node.get('schemes') or []
-print(schemes[0] if schemes else '')
-")"
+          SCHEME_FOUND="$(printf '%s' "$JSON" | python3 -c 'import json,sys;d=json.load(sys.stdin);n=d.get("workspace") or d.get("project") or {};s=n.get("schemes") or [];print(s[0] if s else "")')"
           if [ -z "$SCHEME_FOUND" ]; then
             echo "::error::没有探测到 scheme，请在 workflow 的 env.SCHEME 里手动指定"
             exit 1
@@ -183,8 +177,6 @@ print(schemes[0] if schemes else '')
           TAG="build-$(date -u +%Y%m%d-%H%M%S)"
           gh release create "$TAG" "$IPA" \
             --title "${PRODUCT_NAME} 未签名 IPA ${TAG}" \
-            --notes "由 GitHub Actions 在 macOS runner 上构建的**未签名** IPA。
-
-需要用免费 Apple ID（Sideloadly / AltStore / SideStore）或自备证书重签后才能安装。" \
+            --notes "由 GitHub Actions 在 macOS runner 上构建的未签名 IPA。需要用免费 Apple ID（Sideloadly / AltStore / SideStore）或自备证书重签后才能安装。" \
             --latest
           echo "下载页: ${{ github.server_url }}/${{ github.repository }}/releases/tag/$TAG"
